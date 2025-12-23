@@ -11,7 +11,7 @@ interface App {
 const apps: App[] = [
   {
     name: 'Gloomhaven Companion',
-    description: 'Assistant de jeu pour Gloomhaven. Gerez vos campagnes, scenarios et joueurs.',
+    description: 'Assistant de jeu pour Gloomhaven. Gérez vos campagnes, scénarios et joueurs.',
     url: 'https://gloomhaven.cyriongames.fr',
     icon: '⚔️',
     color: 'from-amber-500 to-orange-600',
@@ -19,10 +19,18 @@ const apps: App[] = [
   },
   {
     name: 'ChildLife',
-    description: 'Application familiale pour suivre les progres et recompenses des enfants.',
+    description: 'Application familiale pour suivre les progrès et récompenses des enfants.',
     url: 'https://childlife.cyriongames.fr',
     icon: '👨‍👩‍👧‍👦',
     color: 'from-green-500 to-emerald-600',
+    status: 'live'
+  },
+  {
+    name: 'Shopping',
+    description: 'Liste de courses collaborative avec autocomplétion intelligente.',
+    url: 'https://shopping.cyriongames.fr',
+    icon: '🛒',
+    color: 'from-blue-500 to-cyan-600',
     status: 'live'
   }
 ]
@@ -96,7 +104,7 @@ const goToApp = (url: string) => {
 
     <!-- Footer -->
     <footer class="py-8 text-center text-gray-500 text-sm">
-      <p>&copy; 2024 Cyrion Games. Tous droits reserves.</p>
+      <p>&copy; 2025 Cyrion Games. Tous droits réservés.</p>
     </footer>
   </div>
 </template>
