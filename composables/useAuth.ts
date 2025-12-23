@@ -65,10 +65,22 @@ export const useAuth = () => {
     return keycloakInstance.hasRealmRole(role)
   }
 
-  const hasAppAccess = (appName: string): boolean => {
+  const isSuperAdmin = (): boolean => {
+    return hasRole('superadmin')
+  }
+
+  const hasAppAccess = (appId: string): boolean => {
     if (!isAuthenticated.value) return false
-    // On peut vérifier un rôle spécifique par app ou retourner true pour les utilisateurs connectés
-    return hasRole(`app_${appName}`) || hasRole('admin') || true // par défaut accès à tous si connecté
+    // Superadmin a accès à tout
+    if (isSuperAdmin()) return true
+    // Sinon vérifier le rôle spécifique à l'app
+    return hasRole(`${appId}.access`)
+  }
+
+  const getAccessibleApps = (appIds: string[]): string[] => {
+    if (!isAuthenticated.value) return []
+    if (isSuperAdmin()) return appIds
+    return appIds.filter(appId => hasRole(`${appId}.access`))
   }
 
   return {
@@ -80,6 +92,8 @@ export const useAuth = () => {
     login,
     logout,
     hasRole,
-    hasAppAccess
+    isSuperAdmin,
+    hasAppAccess,
+    getAccessibleApps
   }
 }
