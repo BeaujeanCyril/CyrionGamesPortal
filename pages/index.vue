@@ -36,7 +36,7 @@ const apps: App[] = [
 ]
 
 const goToApp = (url: string) => {
-  window.open(url, '_blank')
+  window.location.href = url
 }
 </script>
 
