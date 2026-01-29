@@ -22,6 +22,15 @@ const allApps: App[] = [
     appId: 'gloomhaven'
   },
   {
+    name: 'Tainted Grail',
+    description: 'Gestionnaire de lieux pour Tainted Grail. Suivez vos explorations et menhirs.',
+    url: 'https://taintedgrail.cyriongames.fr',
+    icon: '🗿',
+    color: 'from-stone-500 to-stone-700',
+    status: 'live',
+    appId: 'taintedgrail'
+  },
+  {
     name: 'ChildLife',
     description: 'Application familiale pour suivre les progrès et récompenses des enfants.',
     url: 'https://childlife.cyriongames.fr',
