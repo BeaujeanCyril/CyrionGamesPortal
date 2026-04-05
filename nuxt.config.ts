@@ -6,7 +6,7 @@ export default defineNuxtConfig({
     compressPublicAssets: true,
     serveStatic: 'inline',
     routeRules: {
-      '/_nuxt/**': {
+      '/**': {
         headers: {
           'content-security-policy': '',
           'x-frame-options': '',
