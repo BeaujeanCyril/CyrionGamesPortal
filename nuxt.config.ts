@@ -5,14 +5,8 @@ export default defineNuxtConfig({
   nitro: {
     compressPublicAssets: true,
     serveStatic: 'inline',
-    routeRules: {
-      '/**': {
-        headers: {
-          'content-security-policy': '',
-          'x-frame-options': '',
-          'referrer-policy': ''
-        }
-      }
+    security: {
+      headers: false
     }
   },
   app: {
