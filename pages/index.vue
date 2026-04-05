@@ -69,6 +69,22 @@ const goToApp = (app: App) => {
   window.location.href = app.url
 }
 
+// Family management
+const familyCode = ref(localStorage.getItem('cyrion_family_code') || '')
+const familyInput = ref('')
+
+function linkFamily() {
+  if (familyInput.value.length !== 6) return
+  familyCode.value = familyInput.value
+  localStorage.setItem('cyrion_family_code', familyInput.value)
+  familyInput.value = ''
+}
+
+function unlinkFamily() {
+  familyCode.value = ''
+  localStorage.removeItem('cyrion_family_code')
+}
+
 onMounted(() => {
   initKeycloak()
 })
@@ -191,6 +207,79 @@ onMounted(() => {
           <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-colors" />
           <div class="absolute -top-10 -left-10 w-32 h-32 bg-black/10 rounded-full blur-2xl" />
         </button>
+      </div>
+
+      <!-- Family Section -->
+      <div v-if="!isLoading && isAuthenticated && visibleApps.length > 0" class="mt-12">
+        <h2 class="text-2xl font-bold text-white mb-6 text-center">Ma Famille</h2>
+
+        <!-- Not linked yet -->
+        <div v-if="!familyCode" class="max-w-md mx-auto">
+          <div class="rounded-2xl p-6 bg-white/5 border border-white/10">
+            <p class="text-gray-400 text-center mb-4">Liez vos applications avec un code famille</p>
+            <div class="flex gap-3">
+              <input
+                type="text"
+                v-model="familyInput"
+                class="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:border-purple-400 focus:outline-none"
+                placeholder="Code PIN 6 chiffres"
+                maxlength="6"
+                @keyup.enter="linkFamily"
+              />
+              <button
+                @click="linkFamily"
+                :disabled="familyInput.length !== 6"
+                class="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:from-purple-400 hover:to-pink-400 transition-all disabled:opacity-40"
+              >
+                Lier
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Linked -->
+        <div v-else class="max-w-2xl mx-auto">
+          <div class="rounded-2xl p-6 bg-white/5 border border-white/10">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <span class="text-3xl">👨‍👩‍👧‍👦</span>
+                <div>
+                  <p class="text-white font-semibold">Famille connectée</p>
+                  <p class="text-gray-400 text-sm">Code : {{ familyCode }}</p>
+                </div>
+              </div>
+              <button
+                @click="unlinkFamily"
+                class="px-4 py-2 text-sm rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors border border-red-500/30"
+              >
+                Délier
+              </button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <a href="https://childlife.cyriongames.fr" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:border-green-500/50 transition-colors">
+                <span class="text-2xl">👨‍👩‍👧‍👦</span>
+                <div>
+                  <p class="text-white text-sm font-medium">ChildLife</p>
+                  <p class="text-gray-500 text-xs">Famille</p>
+                </div>
+              </a>
+              <a href="https://shopping.cyriongames.fr" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:border-blue-500/50 transition-colors">
+                <span class="text-2xl">🛒</span>
+                <div>
+                  <p class="text-white text-sm font-medium">Shopping</p>
+                  <p class="text-gray-500 text-xs">Inventaire</p>
+                </div>
+              </a>
+              <a href="https://popote.cyriongames.fr" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:border-orange-500/50 transition-colors">
+                <span class="text-2xl">🍽️</span>
+                <div>
+                  <p class="text-white text-sm font-medium">Popote</p>
+                  <p class="text-gray-500 text-xs">Repas</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
 
