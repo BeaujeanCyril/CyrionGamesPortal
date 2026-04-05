@@ -9,9 +9,11 @@ interface App {
   color: string
   status: 'live' | 'coming'
   appId: string
+  category: 'jeux' | 'famille'
 }
 
 const allApps: App[] = [
+  // Jeux
   {
     name: 'Gloomhaven Companion',
     description: 'Assistant de jeu pour Gloomhaven. Gérez vos campagnes, scénarios et joueurs.',
@@ -19,7 +21,8 @@ const allApps: App[] = [
     icon: '⚔️',
     color: 'from-amber-500 to-orange-600',
     status: 'live',
-    appId: 'gloomhaven'
+    appId: 'gloomhaven',
+    category: 'jeux'
   },
   {
     name: 'Tainted Grail',
@@ -28,8 +31,10 @@ const allApps: App[] = [
     icon: '🗿',
     color: 'from-stone-500 to-stone-700',
     status: 'live',
-    appId: 'taintedgrail'
+    appId: 'taintedgrail',
+    category: 'jeux'
   },
+  // Famille
   {
     name: 'ChildLife',
     description: 'Application familiale pour suivre les progrès et récompenses des enfants.',
@@ -37,7 +42,8 @@ const allApps: App[] = [
     icon: '👨‍👩‍👧‍👦',
     color: 'from-green-500 to-emerald-600',
     status: 'live',
-    appId: 'childlife'
+    appId: 'childlife',
+    category: 'famille'
   },
   {
     name: 'Shopping',
@@ -46,7 +52,8 @@ const allApps: App[] = [
     icon: '🛒',
     color: 'from-blue-500 to-cyan-600',
     status: 'live',
-    appId: 'shopping'
+    appId: 'shopping',
+    category: 'famille'
   },
   {
     name: 'Popote',
@@ -55,14 +62,33 @@ const allApps: App[] = [
     icon: '🍽️',
     color: 'from-orange-400 to-red-500',
     status: 'live',
-    appId: 'popote'
+    appId: 'popote',
+    category: 'famille'
+  },
+  {
+    name: 'Pépettes',
+    description: 'Gestion de budget familial. Revenus, dépenses et solde mois par mois.',
+    url: 'https://pepettes.cyriongames.fr',
+    icon: '💰',
+    color: 'from-yellow-400 to-amber-600',
+    status: 'live',
+    appId: 'pepettes',
+    category: 'famille'
   }
 ]
+
+// Tabs
+const activeTab = ref<'jeux' | 'famille'>('jeux')
 
 // Apps visibles selon les rôles de l'utilisateur
 const visibleApps = computed(() => {
   if (!isAuthenticated.value) return []
-  return allApps.filter(app => hasAppAccess(app.appId))
+  return allApps.filter(app => hasAppAccess(app.appId) && app.category === activeTab.value)
+})
+
+const hasAnyApp = computed(() => {
+  if (!isAuthenticated.value) return false
+  return allApps.some(app => hasAppAccess(app.appId))
 })
 
 const goToApp = (app: App) => {
@@ -138,7 +164,7 @@ onMounted(() => {
         </span>
       </h1>
       <p class="text-xl text-gray-400 max-w-2xl mx-auto px-4">
-        Applications et outils de jeu
+        Applications et outils
       </p>
     </header>
 
@@ -157,15 +183,39 @@ onMounted(() => {
       </div>
 
       <!-- Message si connecté mais aucun accès -->
-      <div v-else-if="!isLoading && isAuthenticated && visibleApps.length === 0" class="text-center py-12">
+      <div v-else-if="!isLoading && isAuthenticated && !hasAnyApp" class="text-center py-12">
         <div class="text-6xl mb-6">🚫</div>
         <h2 class="text-2xl font-bold text-white mb-4">Aucun accès</h2>
         <p class="text-gray-400">Vous n'avez accès à aucune application pour le moment.</p>
         <p class="text-gray-500 text-sm mt-2">Contactez un administrateur pour obtenir les droits d'accès.</p>
       </div>
 
-      <!-- Grille des apps accessibles -->
-      <div v-else-if="!isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Tabs + Grille -->
+      <div v-else-if="!isLoading && isAuthenticated">
+        <!-- Tab buttons -->
+        <div class="flex justify-center gap-2 mb-8">
+          <button
+            @click="activeTab = 'jeux'"
+            class="px-6 py-3 rounded-xl text-sm font-semibold transition-all"
+            :class="activeTab === 'jeux'
+              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+              : 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10'"
+          >
+            🎮 Jeux
+          </button>
+          <button
+            @click="activeTab = 'famille'"
+            class="px-6 py-3 rounded-xl text-sm font-semibold transition-all"
+            :class="activeTab === 'famille'
+              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+              : 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10'"
+          >
+            👨‍👩‍👧‍👦 Famille
+          </button>
+        </div>
+
+        <!-- Apps grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <button
             v-for="app in visibleApps"
             :key="app.name"
@@ -210,8 +260,10 @@ onMounted(() => {
         </button>
       </div>
 
+      </div><!-- end tabs+grid wrapper -->
+
       <!-- Family Section -->
-      <div v-if="!isLoading && isAuthenticated && visibleApps.length > 0" class="mt-12">
+      <div v-if="!isLoading && isAuthenticated && hasAnyApp" class="mt-12">
         <h2 class="text-2xl font-bold text-white mb-6 text-center">Ma Famille</h2>
 
         <!-- Not linked yet -->
