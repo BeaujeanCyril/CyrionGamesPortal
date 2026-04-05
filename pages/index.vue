@@ -47,6 +47,15 @@ const allApps: App[] = [
     color: 'from-blue-500 to-cyan-600',
     status: 'live',
     appId: 'shopping'
+  },
+  {
+    name: 'Popote',
+    description: 'Planificateur de repas avec 547 recettes. Générez vos menus et listes de courses.',
+    url: 'https://popote.cyriongames.fr',
+    icon: '🍽️',
+    color: 'from-orange-400 to-red-500',
+    status: 'live',
+    appId: 'popote'
   }
 ]
 
