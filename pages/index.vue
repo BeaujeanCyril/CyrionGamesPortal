@@ -257,21 +257,21 @@ onMounted(() => {
               </button>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <a href="https://childlife.cyriongames.fr" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:border-green-500/50 transition-colors">
+              <a :href="`https://childlife.cyriongames.fr/family/${familyCode}`" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:border-green-500/50 transition-colors">
                 <span class="text-2xl">👨‍👩‍👧‍👦</span>
                 <div>
                   <p class="text-white text-sm font-medium">ChildLife</p>
                   <p class="text-gray-500 text-xs">Famille</p>
                 </div>
               </a>
-              <a href="https://shopping.cyriongames.fr" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:border-blue-500/50 transition-colors">
+              <a :href="`https://shopping.cyriongames.fr/boutique/${familyCode}`" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:border-blue-500/50 transition-colors">
                 <span class="text-2xl">🛒</span>
                 <div>
                   <p class="text-white text-sm font-medium">Shopping</p>
                   <p class="text-gray-500 text-xs">Inventaire</p>
                 </div>
               </a>
-              <a href="https://popote.cyriongames.fr" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:border-orange-500/50 transition-colors">
+              <a :href="`https://popote.cyriongames.fr/planner?code=${familyCode}`" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:border-orange-500/50 transition-colors">
                 <span class="text-2xl">🍽️</span>
                 <div>
                   <p class="text-white text-sm font-medium">Popote</p>
