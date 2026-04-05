@@ -2,6 +2,19 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss'],
+  nitro: {
+    compressPublicAssets: true,
+    serveStatic: 'inline',
+    routeRules: {
+      '/_nuxt/**': {
+        headers: {
+          'content-security-policy': '',
+          'x-frame-options': '',
+          'referrer-policy': ''
+        }
+      }
+    }
+  },
   app: {
     head: {
       title: 'Cyrion Games',
