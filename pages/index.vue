@@ -263,7 +263,7 @@ onMounted(() => {
       </div><!-- end tabs+grid wrapper -->
 
       <!-- Family Section -->
-      <div v-if="!isLoading && isAuthenticated && hasAnyApp" class="mt-12">
+      <div v-if="!isLoading && isAuthenticated && hasAnyApp && activeTab === 'famille'" class="mt-12">
         <h2 class="text-2xl font-bold text-white mb-6 text-center">Ma Famille</h2>
 
         <!-- Not linked yet -->
