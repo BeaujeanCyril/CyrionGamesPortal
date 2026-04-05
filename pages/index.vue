@@ -70,7 +70,7 @@ const goToApp = (app: App) => {
 }
 
 // Family management
-const familyCode = ref(localStorage.getItem('cyrion_family_code') || '')
+const familyCode = ref('')
 const familyInput = ref('')
 
 function linkFamily() {
@@ -87,6 +87,7 @@ function unlinkFamily() {
 
 onMounted(() => {
   initKeycloak()
+  familyCode.value = localStorage.getItem('cyrion_family_code') || ''
 })
 </script>
 
