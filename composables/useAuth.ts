@@ -10,7 +10,7 @@ let keycloakInstance: Keycloak | null = null
 
 export const useAuth = () => {
   const isAuthenticated = useState<boolean>('isAuthenticated', () => false)
-  const user = useState<{ name: string; email: string } | null>('user', () => null)
+  const user = useState<{ id: string; name: string; email: string } | null>('user', () => null)
   const isLoading = useState<boolean>('authLoading', () => true)
   const token = useState<string | null>('token', () => null)
 
@@ -35,6 +35,7 @@ export const useAuth = () => {
 
       if (authenticated && keycloakInstance.tokenParsed) {
         user.value = {
+          id: keycloakInstance.tokenParsed.sub || '',
           name: keycloakInstance.tokenParsed.preferred_username || keycloakInstance.tokenParsed.name || 'Utilisateur',
           email: keycloakInstance.tokenParsed.email || ''
         }
