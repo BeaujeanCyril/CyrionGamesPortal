@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { isAuthenticated, user, isLoading, initKeycloak, login, logout, hasAppAccess } = useAuth()
+const { isAuthenticated, user, isLoading, initKeycloak, login, logout, hasAppAccess, isSuperAdmin } = useAuth()
 
 interface App {
   name: string
@@ -122,19 +122,31 @@ onMounted(() => {
           <span v-else class="text-gray-400">Non connecté</span>
         </div>
 
-        <div>
+        <div class="flex items-center gap-2">
+          <NuxtLink
+            v-if="!isLoading && isAuthenticated && isSuperAdmin()"
+            to="/admin/users"
+            class="px-4 py-2 text-sm rounded-lg bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 transition-colors border border-amber-500/30">
+            Admin
+          </NuxtLink>
           <button
             v-if="!isLoading && isAuthenticated"
             @click="logout"
             class="px-4 py-2 text-sm rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors border border-red-500/30">
             Déconnexion
           </button>
-          <button
-            v-else-if="!isLoading"
-            @click="login"
-            class="px-4 py-2 text-sm rounded-lg bg-purple-500/20 text-purple-300 hover:bg-purple-500/30 transition-colors border border-purple-500/30">
-            Connexion
-          </button>
+          <template v-else-if="!isLoading">
+            <NuxtLink
+              to="/register"
+              class="px-4 py-2 text-sm rounded-lg bg-white/5 text-gray-300 hover:bg-white/10 transition-colors border border-white/10">
+              Créer un compte
+            </NuxtLink>
+            <button
+              @click="login"
+              class="px-4 py-2 text-sm rounded-lg bg-purple-500/20 text-purple-300 hover:bg-purple-500/30 transition-colors border border-purple-500/30">
+              Connexion
+            </button>
+          </template>
         </div>
       </div>
     </nav>
@@ -158,11 +170,18 @@ onMounted(() => {
         <div class="text-6xl mb-6">🔐</div>
         <h2 class="text-2xl font-bold text-white mb-4">Connexion requise</h2>
         <p class="text-gray-400 mb-6">Connectez-vous pour accéder aux applications</p>
-        <button
-            @click="login"
-            class="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:from-purple-400 hover:to-pink-400 transition-all">
-          Se connecter
-        </button>
+        <div class="flex justify-center gap-3 flex-wrap">
+          <button
+              @click="login"
+              class="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:from-purple-400 hover:to-pink-400 transition-all">
+            Se connecter
+          </button>
+          <NuxtLink
+              to="/register"
+              class="px-6 py-3 rounded-xl bg-white/5 text-gray-300 hover:bg-white/10 transition-all border border-white/10 font-semibold">
+            Créer un compte
+          </NuxtLink>
+        </div>
       </div>
 
       <!-- Message si connecté mais aucun accès -->
