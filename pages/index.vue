@@ -74,6 +74,16 @@ const allApps: App[] = [
     status: 'live',
     appId: 'pepettes',
     category: 'famille'
+  },
+  {
+    name: 'Gambettes',
+    description: 'Suivi d\'activité physique : hydratation, pas, exercices, programmes.',
+    url: 'https://gambettes.cyriongames.fr',
+    icon: '🦵',
+    color: 'from-rose-500 to-pink-600',
+    status: 'live',
+    appId: 'gambettes',
+    category: 'famille'
   }
 ]
 
