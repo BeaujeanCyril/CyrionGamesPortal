@@ -34,6 +34,16 @@ const allApps: App[] = [
     appId: 'taintedgrail',
     category: 'jeux'
   },
+  {
+    name: 'D&D',
+    description: 'Retranscriptions de campagnes, fiches de personnage et grimoire.',
+    url: 'https://dnd.cyriongames.fr',
+    icon: '🐉',
+    color: 'from-red-600 to-rose-800',
+    status: 'live',
+    appId: 'dnd',
+    category: 'jeux'
+  },
   // Famille
   {
     name: 'ChildLife',
