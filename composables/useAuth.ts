@@ -8,6 +8,25 @@ const keycloakConfig = {
 
 let keycloakInstance: Keycloak | null = null
 
+/**
+ * L'initialisation en cours, ou celle qui a deja eu lieu.
+ *
+ * keycloak-js refuse categoriquement d'etre initialise deux fois :
+ * `init()` leve "A 'Keycloak' instance can only be initialized once." des
+ * que `didInitialize` est vrai. Or chaque page appelle `initKeycloak()` au
+ * montage, ce qui est la bonne facon de faire pour une page ouverte
+ * directement — mais la deuxieme page atteinte par navigation client
+ * retombait sur la meme instance, relancait `init()`, recevait l'erreur, et
+ * le `catch` concluait a une session absente. L'utilisateur authentifie se
+ * voyait repondre "Connexion requise" par la page elle-meme.
+ *
+ * On memorise donc la promesse plutot que la seule instance : les appels
+ * suivants attendent le premier au lieu de le refaire. Une variable de
+ * module convient ici, et seulement ici, parce que rien n'y est ecrit cote
+ * serveur — `initKeycloak` sort avant.
+ */
+let initPromise: Promise<void> | null = null
+
 export const useAuth = () => {
   const isAuthenticated = useState<boolean>('isAuthenticated', () => false)
   const user = useState<{ id: string; name: string; email: string } | null>('user', () => null)
@@ -20,6 +39,14 @@ export const useAuth = () => {
       return
     }
 
+    // Deja fait, ou en cours : on attend ce resultat-la.
+    if (initPromise) return initPromise
+
+    initPromise = runInit()
+    return initPromise
+  }
+
+  const runInit = async () => {
     if (!keycloakInstance) {
       keycloakInstance = new Keycloak(keycloakConfig)
     }
